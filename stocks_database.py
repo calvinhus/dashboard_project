@@ -198,7 +198,7 @@ def db_structure(connection):
     c.execute(msft_2yr_table)
 
     # Table: AMZN_2yr
-    amzn_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.MSFT_2yr
+    amzn_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.AMZN_2yr
                     (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
                         `ticker` VARCHAR(5) DEFAULT 'AMZN',
                         `date` DATE,
