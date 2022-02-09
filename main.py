@@ -20,22 +20,6 @@ conn = mysql.connector.connect(
 )
 
 
-# def get_latest_updates(ticker, iex_api_key):
-#     """This method makes the request to the API for each ticker in list
-#         and returns the values of the required attributes"""
-#     values_insert = []
-
-#     api_url = f'https://cloud.iexapis.com/stable/stock/{ticker}/quote?token={iex_api_key}'
-
-#     df = requests.get(api_url).json()
-
-#     attributes = ['latestPrice', 'marketCap', 'change', 'changePercent',
-#                   'open', 'close', 'week52High', 'week52Low', 'currency']
-#     for i in attributes:
-#         values_insert.append(df[i])
-
-#     return tuple(values_insert)
-
 # Loop through tickers, make the API request and insert the data into the corresponding table
 for t in tickers:
     sdb.db_insert_real_time(connection=conn, ticker=t, iex_api_key=iex_api_key)

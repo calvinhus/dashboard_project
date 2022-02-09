@@ -269,23 +269,6 @@ def db_structure(connection):
     c.close()
 
 
-def get_latest_updates(ticker, iex_api_key):
-    """This method makes the request to the API for each ticker in list
-        and returns the values of the required attributes"""
-    # values_insert = []
-
-    # api_url = f'https://cloud.iexapis.com/stable/stock/{ticker}/quote?token={iex_api_key}'
-
-    # df = requests.get(api_url).json()
-
-    # attributes = ['latestPrice', 'marketCap', 'change', 'changePercent',
-    #               'open', 'close', 'week52High', 'week52Low', 'currency']
-    # for i in attributes:
-    #     values_insert.append(df[i])
-
-    # return tuple(values_insert)
-
-
 def db_insert_real_time(connection, ticker, iex_api_key):
     """This method populates the database tables.
         It takes the connection to the database, the list of tickers 
@@ -320,7 +303,6 @@ def db_insert_real_time(connection, ticker, iex_api_key):
     c.executemany(insert_query, [values_insert])
 
     # Commit the transaction
-    print(f"Inserted into {ticker} table.\n")
     connection.commit()
 
     # Close cursor
