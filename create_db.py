@@ -9,7 +9,7 @@ sql_pass = os.environ["MYSQL_PASSWORD"]
 # Create database connection
 conn = mysql.connector.connect(
     host="localhost",
-    user="root",
+    user="calvinho",
     passwd=sql_pass
 )
 
