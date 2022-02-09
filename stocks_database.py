@@ -311,7 +311,6 @@ def get_historical_data(connection, ticker, iex_api_key):
 
     # request only data for past 2 years
     api_url = f"https://cloud.iexapis.com/stable/stock/{ticker}/chart/2y?token={iex_api_key}"
-    # 'https://sandbox.iexapis.com/stable/stock//chart/2y?token='
 
     response = requests.get(api_url).json()
     values_insert = []
@@ -323,17 +322,12 @@ def get_historical_data(connection, ticker, iex_api_key):
         _close = response[i]['close']
 
         values_insert.append((_date, _open, _high, _low, _close))
-        print('NOW:')
-        print(type(values_insert))
-        print(values_insert)
-        print('done')
-        break
+
         # Execute query
-        #c.executemany(historic_query, tuple(values_insert))
+        c.executemany(historic_query, values_insert)
 
         # Commit the transaction
-        print(f"Inserted into {ticker}_2yr table.\n")
-        # connection.commit()
+        connection.commit()
 
     # Close cursor
     c.close

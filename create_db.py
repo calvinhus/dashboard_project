@@ -24,6 +24,7 @@ sdb.db_structure(conn)
 # Populate database with historical data (last 2 years only)
 for t in tickers:
     sdb.get_historical_data(conn, t, iex_api_key)
+    print(f"Inserted historical data in {t}_2yr table.")
 
 # Close the connection
 conn.close()
