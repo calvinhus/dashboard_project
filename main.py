@@ -9,7 +9,7 @@ sql_pass = os.environ["MYSQL_PASSWORD"]
 # Fetch IEX api key from env variable
 iex_api_key = os.environ['IEX_API_KEY']
 
-# Create list with ticker stocks to request
+# Create list with ticker stocks to make the requests
 tickers = ['URTH', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA', 'FB', 'NVDA']
 
 # Create database connection

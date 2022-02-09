@@ -1,3 +1,7 @@
+import requests
+import pandas as pd
+
+
 def db_structure(connection):
     """This method creates the database and the necessary tables. It takes the connection to the database as a parameter."""
 
@@ -155,7 +159,111 @@ def db_structure(connection):
                     );"""
     c.execute(nvda_table)
 
-    # Success
+    # Table: URTH_2yr
+    urth_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.URTH_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'URTH',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(urth_2yr_table)
+
+    # Table: AAPL_2yr
+    aapl_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.AAPL_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'AAPL',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(aapl_2yr_table)
+
+    # Table: MSFT_2yr
+    msft_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.MSFT_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'MSFT',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(msft_2yr_table)
+
+    # Table: AMZN_2yr
+    amzn_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.MSFT_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'AMZN',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(amzn_2yr_table)
+
+    # Table: GOOGL_2yr
+    googl_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.GOOGL_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'GOOGL',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(googl_2yr_table)
+
+    # Table: TSLA_2yr
+    tsla_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.TSLA_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'TSLA',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(tsla_2yr_table)
+
+    # Table: FB_2yr
+    fb_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.FB_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'FB',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(fb_2yr_table)
+
+    # Table: NVDA_2yr
+    nvda_2yr_table = """CREATE TABLE IF NOT EXISTS stocks_db.NVDA_2yr
+                    (   `index` MEDIUMINT NOT NULL AUTO_INCREMENT,
+                        `ticker` VARCHAR(5) DEFAULT 'NVDA',
+                        `date` DATE,
+                        `open` FLOAT,
+                        `high` FLOAT,
+                        `low` FLOAT,
+                        `close` FLOAT,
+                        PRIMARY KEY(`index`)
+                    );"""
+    c.execute(nvda_2yr_table)
+
+    # On success:
     print("\nDatabase and tables created.\n")
 
     # Close cursor
@@ -186,3 +294,43 @@ def db_insert_real_time(connection, ticker, values_insert):
 
     # Close cursor
     c.close()
+
+
+def get_historical_data(connection, symbol, iex_api_key):
+    """This method creates the database and the necessary tables. It takes the connection to the database as a parameter."""
+
+    # Create a cursor
+    c = connection.cursor()
+
+    # Change database context
+    c.execute("USE stocks_db;")
+
+    # Build the query
+    insert_2yr_query = """INSERT INTO stocks_db.""" + symbol + """_2yr""" \
+        """(`date`,`open`,`high`,`low`,`close`)
+            VALUES(%s, %s, %s, %s, %s)"""
+
+    # request only data for past 2 years
+    api_url = f"https://cloud.iexapis.com/stable/stock/{symbol}/chart/2y?token={iex_api_key}"
+    # 'https://sandbox.iexapis.com/stable/stock//chart/2y?token='
+
+    response = requests.get(api_url).json()
+
+    for i in range(len(response)):
+
+        print(response[i]['symbol'])
+        print(response[i]['date'])
+        print(response[i]['open'])
+        print(response[i]['high'])
+        print(response[i]['low'])
+        print(response[i]['close'])
+
+        # Execute query
+        c.executemany(insert_2yr_query, values_insert)
+
+        # Commit the transaction
+        print(f"Inserted into {symbol}_2yr table.\n")
+        connection.commit()
+
+    # Close cursor
+    c.close

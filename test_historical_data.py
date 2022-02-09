@@ -1,3 +1,4 @@
+import requests
 import os
 import mysql.connector
 import stocks_database as sdb
@@ -8,22 +9,15 @@ sql_pass = os.environ["MYSQL_PASSWORD"]
 # Fetch IEX api key from env variable
 iex_api_key = os.environ['IEX_API_KEY']
 
-# Create list with ticker stocks to make the requests
+# Create list with ticker stocks to request
 tickers = ['URTH', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA', 'FB', 'NVDA']
 
 # Create database connection
 conn = mysql.connector.connect(
     host="localhost",
-    user="calvinho",
+    user="root",
     passwd=sql_pass
 )
 
-# Call method to create database and all tables (if they don't already exist)
-sdb.db_structure(conn)
-
-# Populate database with historical data (last 2 years only)
-# for t in tickers:
-#    sdb.get_historical_data(conn, t, iex_api_key)
-
-# Close the connection
-conn.close()
+sdb.get_historical_data(conn, 'AAPL', iex_api_key)
+# get_historic_data('AAPL')
