@@ -15,7 +15,7 @@ tickers = ['URTH', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA', 'FB', 'NVDA']
 # Create database connection
 conn = mysql.connector.connect(
     host="localhost",
-    user="root",
+    user="calvinho",
     passwd=sql_pass
 )
 
