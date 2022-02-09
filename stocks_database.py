@@ -162,7 +162,7 @@ def db_structure(connection):
     c.close()
 
 
-def db_insert(connection, ticker, values_insert):
+def db_insert_real_time(connection, ticker, values_insert):
     """This method populates the database tables.
         It takes the connection to the database, the list of tickers 
         and the tuple of values to insert as parameters."""

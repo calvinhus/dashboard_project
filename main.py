@@ -36,14 +36,11 @@ def get_latest_updates(ticker, iex_api_key):
     return tuple(values_insert)
 
 
-# Call method to create database
-sdb.db_structure(conn)
-
 # Loop through tickers, make the API request and insert the data into the corresponding table
 for t in tickers:
     values_insert = get_latest_updates(t, iex_api_key)
     # has to be *tickers in 2nd param
-    sdb.db_insert(conn, t, [values_insert])
+    sdb.db_insert_real_time(conn, t, [values_insert])
 
 # Close the connection
 conn.close()
