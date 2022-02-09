@@ -36,7 +36,6 @@ conn = mysql.connector.connect(
 
 #     return tuple(values_insert)
 
-
 # Loop through tickers, make the API request and insert the data into the corresponding table
 for t in tickers:
     sdb.db_insert_real_time(connection=conn, ticker=t, iex_api_key=iex_api_key)

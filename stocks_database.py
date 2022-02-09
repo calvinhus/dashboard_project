@@ -303,6 +303,9 @@ def db_insert_real_time(connection, ticker, iex_api_key):
     for i in attributes:
         values_insert.append(df[i])
 
+    # Turn it into a tuple
+    values_insert = tuple(values_insert)
+
     # Create a cursor
     c = connection.cursor()
 
@@ -314,7 +317,7 @@ def db_insert_real_time(connection, ticker, iex_api_key):
         """(`price`,`marketCap`,`change`,`changePercent`,`open`,`close`,`week52High`,`week52Low`,`currency`)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-    c.executemany(insert_query, tuple(values_insert))
+    c.executemany(insert_query, [values_insert])
 
     # Commit the transaction
     print(f"Inserted into {ticker} table.\n")
