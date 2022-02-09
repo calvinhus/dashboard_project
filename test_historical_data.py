@@ -19,5 +19,5 @@ conn = mysql.connector.connect(
     passwd=sql_pass
 )
 
-sdb.get_historical_data(conn, 'AAPL', iex_api_key)
+#sdb.get_historical_data(conn, 'AAPL', iex_api_key)
 # get_historic_data('AAPL')
