@@ -22,8 +22,8 @@ conn = mysql.connector.connect(
 sdb.db_structure(conn)
 
 # Populate database with historical data (last 2 years only)
-# for t in tickers:
-#    sdb.get_historical_data(conn, t, iex_api_key)
+for t in tickers:
+    sdb.get_historical_data(conn, t, iex_api_key)
 
 # Close the connection
 conn.close()

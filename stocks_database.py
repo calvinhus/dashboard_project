@@ -295,7 +295,7 @@ def db_insert_real_time(connection, ticker, values_insert):
     c.close()
 
 
-def get_historical_data(connection, symbol, iex_api_key):
+def get_historical_data(connection, ticker, iex_api_key):
     """This method creates the database and the necessary tables. It takes the connection to the database as a parameter."""
 
     # Create a cursor
@@ -305,31 +305,35 @@ def get_historical_data(connection, symbol, iex_api_key):
     c.execute("USE stocks_db;")
 
     # Build the query
-    insert_2yr_query = """INSERT INTO stocks_db.""" + symbol + """_2yr""" \
+    historic_query = """INSERT INTO stocks_db.""" + ticker + """_2yr""" \
         """(`date`,`open`,`high`,`low`,`close`)
             VALUES(%s, %s, %s, %s, %s)"""
 
     # request only data for past 2 years
-    api_url = f"https://cloud.iexapis.com/stable/stock/{symbol}/chart/2y?token={iex_api_key}"
+    api_url = f"https://cloud.iexapis.com/stable/stock/{ticker}/chart/2y?token={iex_api_key}"
     # 'https://sandbox.iexapis.com/stable/stock//chart/2y?token='
 
     response = requests.get(api_url).json()
-
+    values_insert = []
     for i in range(len(response)):
+        _date = response[i]['date']
+        _open = response[i]['open']
+        _high = response[i]['high']
+        _low = response[i]['low']
+        _close = response[i]['close']
 
-        print(response[i]['symbol'])
-        print(response[i]['date'])
-        print(response[i]['open'])
-        print(response[i]['high'])
-        print(response[i]['low'])
-        print(response[i]['close'])
-
+        values_insert.append((_date, _open, _high, _low, _close))
+        print('NOW:')
+        print(type(values_insert))
+        print(values_insert)
+        print('done')
+        break
         # Execute query
-        c.executemany(insert_2yr_query, values_insert)
+        #c.executemany(historic_query, tuple(values_insert))
 
         # Commit the transaction
-        print(f"Inserted into {symbol}_2yr table.\n")
-        connection.commit()
+        print(f"Inserted into {ticker}_2yr table.\n")
+        # connection.commit()
 
     # Close cursor
     c.close
